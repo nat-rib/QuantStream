@@ -1,0 +1,45 @@
+{
+  "title": "Ingestion Overview",
+  "uid": "quantstream-ingestion-overview",
+  "panels": [
+    {
+      "title": "Events Ingested (per second)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_ingestion_events_total[1m])",
+          "legendFormat": "{{symbol}} @ {{exchange}}"
+        }
+      ]
+    },
+    {
+      "title": "Connection Status",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "quantstream_ingestion_connection_status",
+          "legendFormat": "{{exchange}}"
+        }
+      ]
+    },
+    {
+      "title": "Errors by Type",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_ingestion_errors_total[5m])",
+          "legendFormat": "{{error_type}}"
+        }
+      ]
+    },
+    {
+      "title": "Total Events Ingested",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(quantstream_ingestion_events_total)"
+        }
+      ]
+    }
+  ]
+}

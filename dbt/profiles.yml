@@ -1,0 +1,7 @@
+quantstream:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/quantstream.duckdb"
+      threads: 4

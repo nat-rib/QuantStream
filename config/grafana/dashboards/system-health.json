@@ -1,0 +1,16 @@
+{
+  "title": "System Health",
+  "uid": "quantstream-system-health",
+  "panels": [
+    {
+      "title": "Component Status",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "quantstream_service_health",
+          "legendFormat": "{{component}}"
+        }
+      ]
+    }
+  ]
+}

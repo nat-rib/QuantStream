@@ -1,0 +1,53 @@
+{
+  "title": "API Performance",
+  "uid": "quantstream-api-performance",
+  "panels": [
+    {
+      "title": "Request Latency (p50, p95, p99)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, rate(quantstream_api_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(quantstream_api_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(quantstream_api_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "p99"
+        }
+      ]
+    },
+    {
+      "title": "Request Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_api_requests_total[1m])",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ]
+    },
+    {
+      "title": "Error Rate by Status Code",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_api_requests_total{status_code=~\"5..\"}[5m])",
+          "legendFormat": "5xx errors"
+        }
+      ]
+    },
+    {
+      "title": "Total Requests",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(quantstream_api_requests_total)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "title": "Stream Health",
+  "uid": "quantstream-stream-health",
+  "panels": [
+    {
+      "title": "Events Processed (per second)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_streaming_events_processed_total[1m])",
+          "legendFormat": "{{stage}}"
+        }
+      ]
+    },
+    {
+      "title": "Consumer Lag",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "quantstream_streaming_lag_seconds",
+          "legendFormat": "{{consumer_group}}/{{topic}}"
+        }
+      ]
+    },
+    {
+      "title": "Dead-Letter Events Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_streaming_dlq_events_total[5m])",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    },
+    {
+      "title": "Late Events Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(quantstream_streaming_late_events_total[5m])",
+          "legendFormat": "{{symbol}}"
+        }
+      ]
+    },
+    {
+      "title": "Error Rate Overview",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(rate(quantstream_ingestion_errors_total[5m])) + sum(rate(quantstream_streaming_dlq_events_total[5m]))"
+        }
+      ]
+    }
+  ]
+}

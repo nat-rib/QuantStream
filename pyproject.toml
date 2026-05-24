@@ -1,0 +1,85 @@
+[tool.poetry]
+name = "quantstream"
+version = "0.1.0"
+description = "Real-time crypto market data engineering platform"
+authors = ["QuantStream Team"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "quantstream", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.5"
+fastapi = "^0.109"
+uvicorn = { version = "^0.27", extras = ["standard"] }
+duckdb = "^0.10"
+pyarrow = "^15.0"
+pyspark = { version = "^3.5", extras = ["sql", "streaming"] }
+confluent-kafka = "^2.3"
+websockets = "^12.0"
+prometheus-client = "^0.19"
+great-expectations = "^0.18"
+dbt-core = "^1.7"
+dbt-duckdb = "^1.7"
+httpx = "^0.26"
+structlog = "^24.1"
+click = "^8.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pytest-asyncio = "^0.23"
+pytest-mock = "^3.12"
+pytest-cov = "^4.1"
+ruff = "^0.2"
+black = "^24.1"
+mypy = "^1.8"
+pre-commit = "^3.6"
+pytest-timeout = "^2.2"
+
+[tool.poetry.scripts]
+quantstream-ingestion = "quantstream.ingestion.main:main"
+quantstream-spark = "quantstream.streaming.main:main"
+quantstream-api = "quantstream.api.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["pyspark.*", "confluent_kafka.*", "dbt.*", "great_expectations.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests requiring Docker services",
+    "contract: Contract tests verifying schemas and interfaces",
+    "slow: Slow running tests",
+]

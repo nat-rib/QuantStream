@@ -1,0 +1,19 @@
+FROM bitnami/spark:3.5.1
+
+USER root
+
+RUN pip install poetry
+
+COPY pyproject.toml poetry.lock* /app/
+WORKDIR /app
+
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-dev --no-interaction --no-ansi
+
+COPY src/ /app/src/
+
+ENV PYTHONPATH=/app/src
+
+CMD ["spark-submit", "--master", "spark://spark-master:7077", \
+     "--packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262", \
+     "/app/src/quantstream/streaming/main.py"]

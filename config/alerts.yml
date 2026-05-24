@@ -1,0 +1,47 @@
+groups:
+  - name: quantstream_alerts
+    rules:
+      - alert: ConsumerLagHigh
+        expr: quantstream_streaming_lag_seconds > 120
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Consumer lag is high"
+          description: "Consumer lag for {{ $labels.consumer_group }} on topic {{ $labels.topic }} is {{ $value }}s"
+
+      - alert: ConsumerLagCritical
+        expr: quantstream_streaming_lag_seconds > 300
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Consumer lag is critical"
+          description: "Consumer lag is {{ $value }}s, exceeding 300s threshold"
+
+      - alert: IngestionConnectionDown
+        expr: quantstream_ingestion_connection_status == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Ingestion WebSocket connection is down"
+          description: "Connection to {{ $labels.exchange }} has been down for more than 1 minute"
+
+      - alert: DeadLetterRateHigh
+        expr: rate(quantstream_streaming_dlq_events_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High dead-letter event rate"
+          description: "Dead-letter rate is {{ $value }} events/min, exceeding 10/min threshold"
+
+      - alert: APIErrorRateHigh
+        expr: rate(quantstream_api_requests_total{status_code=~"5.."}[5m]) / rate(quantstream_api_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API error rate is high"
+          description: "API error rate is {{ $value | humanizePercentage }}"

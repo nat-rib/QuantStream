@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: gold
+    description: Gold layer Parquet datasets from Spark aggregations
+    tables:
+      - name: ohlc
+        description: OHLC candle aggregations
+        meta:
+          external_location: "../data/gold/ohlc/"
+
+      - name: volume_profiles
+        description: Volume profile aggregations
+        meta:
+          external_location: "../data/gold/volume_profiles/"
+
+      - name: trade_stats
+        description: Trade statistics aggregations
+        meta:
+          external_location: "../data/gold/trade_stats/"

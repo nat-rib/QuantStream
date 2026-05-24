@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Data
+data/
+*.duckdb
+*.duckdb.wal
+
+# Spark
+spark-checkpoints/
+metastore_db/
+derby.log
+spark-warehouse/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/packages/
+
+# Great Expectations
+great_expectations/uncommitted/
+
+# Prometheus
+prometheus-data/
+
+# Grafana
+grafana-data/
+
+# Docker
+docker-compose.override.yml
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Testing
+.pytest_cache/
+.hypothesis/
+
+# Tools
+.mypy_cache/
+.ruff_cache/
+.python-version
+
+# Logs
+*.log
+logs/

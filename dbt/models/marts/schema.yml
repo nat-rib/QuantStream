@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: daily_summary
+    description: Daily aggregated market data combining OHLC and volume metrics per symbol
+    columns:
+      - name: symbol
+        description: Trading pair symbol
+        tests:
+          - not_null
+      - name: trade_date
+        description: Trading date
+        tests:
+          - not_null
+      - name: open_price
+        description: Opening price for the day
+      - name: high_price
+        description: Highest price for the day
+      - name: low_price
+        description: Lowest price for the day
+      - name: close_price
+        description: Closing price for the day
+      - name: volume
+        description: Total traded volume
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: trade_count
+        description: Number of trades
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - symbol
+            - trade_date
+
+  - name: symbol_performance
+    description: Symbol-level performance rankings and metrics
+    columns:
+      - name: symbol
+        description: Trading pair symbol
+        tests:
+          - not_null
+      - name: trade_date
+        description: Trading date
+      - name: volume
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+  - name: volatility_metrics
+    description: Rolling volatility and moving average metrics
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+      - name: trade_date
+        tests:
+          - not_null
+
+  - name: market_activity
+    description: Market-wide activity summary per day
+    columns:
+      - name: trade_date
+        tests:
+          - not_null
+          - unique
+      - name: total_volume
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
