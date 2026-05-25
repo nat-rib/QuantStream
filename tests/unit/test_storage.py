@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 import pytest
+import datetime as dt
 from pyspark.sql import SparkSession
 
 from quantstream.schemas.trade import TradeEvent
@@ -87,4 +88,4 @@ class TestStorageWriter:
             result = spark.read.parquet(tmpdir)
             partitions = result.select("partition_date").distinct().collect()
             assert len(partitions) == 1
-            assert partitions[0].partition_date == "2026-05-24"
+            assert partitions[0].partition_date == dt.date(2026, 5, 24)

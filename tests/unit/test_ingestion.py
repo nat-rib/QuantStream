@@ -137,5 +137,6 @@ class TestRedpandaProducer:
     def test_flush_calls_underlying_producer(self, mock_kafka_producer):
         config = ProducerConfig(bootstrap_servers="localhost:9092")
         producer = RedpandaProducer(config)
+        producer._producer.flush.return_value = 0
         producer.flush(timeout=10.0)
         producer._producer.flush.assert_called_once_with(10.0)

@@ -103,6 +103,10 @@ class SparkStreamingPipeline:
             try:
                 envelope_data = json.loads(value.decode("utf-8"))
                 payload = envelope_data.get("payload", {})
+
+                event_time_str = payload.get("eventTime", "")
+                ingest_time_str = payload.get("ingestTime", "")
+
                 return {
                     "trade_id": payload.get("tradeId", ""),
                     "exchange": payload.get("exchange", ""),
@@ -110,8 +114,8 @@ class SparkStreamingPipeline:
                     "price": float(payload.get("price", 0)),
                     "quantity": float(payload.get("quantity", 0)),
                     "side": payload.get("side", ""),
-                    "event_time": payload.get("eventTime"),
-                    "ingest_time": payload.get("ingestTime"),
+                    "event_time": datetime.fromisoformat(event_time_str) if event_time_str else None,
+                    "ingest_time": datetime.fromisoformat(ingest_time_str) if ingest_time_str else None,
                     "schema_version": str(payload.get("schemaVersion", 1)),
                 }
             except Exception as e:
